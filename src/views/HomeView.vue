@@ -1,6 +1,16 @@
 <template>
+  <canvas ref="chartCanvas">
+  </canvas>
+  <div style="display: flex;justify-content: center;">
 
-  <canvas ref="chartCanvas"></canvas>
+    <div style="margin:41px;width:345px; height:345px;
+       background-color: #f2f2f2;position: absolute;
+       z-index: -1000;top: 0;
+       border-radius: 50%;
+       ">
+
+    </div>
+  </div>
 
 </template>
 
