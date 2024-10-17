@@ -4,7 +4,7 @@
   <div style="display: flex;justify-content: center;">
 
     <div style="margin:41px;width:345px; height:345px;
-       background-color: #f2f2f2;position: absolute;
+       background-color: red;position: absolute;
        z-index: -1000;top: 0;
        border-radius: 50%;
        ">
