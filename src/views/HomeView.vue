@@ -1,81 +1,85 @@
 <template>
-  <canvas ref="chartCanvas">
-  </canvas>
-  <div style="display: flex;justify-content: center;">
-
-    <div style="margin:82px;width:260px; height:260px;
-       background-color: #f2f2f2;position: absolute;
-       z-index: -1000;top: 0;
-       border-radius: 50%;
-       ">
-
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    "
+  >
+    <canvas ref="chartCanvas"></canvas>
+    <div class="circle-indicator">
+      <div class="inner-content">
+        <div>DAY</div>
+        <div class="day-number">24</div>
+      </div>
     </div>
   </div>
-
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { Chart, DoughnutController, ArcElement, Tooltip, Legend, CategoryScale } from "chart.js";
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { Chart, DoughnutController, ArcElement, Tooltip, Legend, CategoryScale } from 'chart.js'
 
-Chart.register(DoughnutController, ArcElement, Tooltip, Legend, CategoryScale);
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend, CategoryScale)
 
-const chartCanvas = ref<HTMLCanvasElement | null>(null);
-let donutChart: Chart | null = null;
+const chartCanvas = ref<HTMLCanvasElement | null>(null)
+let donutChart: any = null
 // Define the shadow plugin
 const shadowPlugin = {
   id: 'shadowPlugin',
   beforeDatasetsDraw(chart) {
-    const { ctx } = chart;
+    const { ctx } = chart
 
     chart.data.datasets.forEach((dataset, datasetIndex) => {
-      const meta = chart.getDatasetMeta(datasetIndex);
+      const meta = chart.getDatasetMeta(datasetIndex)
 
       meta.data.forEach((arc, index) => {
         const model = arc.getProps(
           ['x', 'y', 'startAngle', 'endAngle', 'innerRadius', 'outerRadius'],
           true
-        );
+        )
 
-        ctx.save();
+        ctx.save()
 
         // Set the shadow properties
-        ctx.shadowColor = dataset.hoverBackgroundColor[index];
-        ctx.shadowBlur = 20;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-        const shadowOffset = 1;
-        const shadowOuterRadius = model.outerRadius + shadowOffset;
-        ctx.beginPath();
-        ctx.arc(model.x, model.y, shadowOuterRadius, model.startAngle, model.endAngle);
+        ctx.shadowColor = dataset.hoverBackgroundColor[index]
+        ctx.shadowBlur = 20
+        ctx.shadowOffsetX = 0
+        ctx.shadowOffsetY = 0
+        const shadowOffset = 1
+        const shadowOuterRadius = model.outerRadius + shadowOffset
+        ctx.beginPath()
+        ctx.arc(model.x, model.y, shadowOuterRadius, model.startAngle, model.endAngle)
         // ctx.arc(model.x, model.y, model.outerRadius, model.startAngle, model.endAngle);
-        ctx.arc(model.x, model.y, model.innerRadius, model.endAngle, model.startAngle, true);
-        ctx.closePath();
+        ctx.arc(model.x, model.y, model.innerRadius, model.endAngle, model.startAngle, true)
+        ctx.closePath()
 
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
+        ctx.fillStyle = '#ffffff'
+        ctx.fill()
 
-        ctx.restore();
-      });
-    });
-  },
-};
+        ctx.restore()
+      })
+    })
+  }
+}
 
 // Register the plugin
-Chart.register(shadowPlugin);
+Chart.register(shadowPlugin)
 
 const data = {
   labels: [],
   datasets: [
     {
-      label: "Colors",
+      label: 'Colors',
       data: [12, 20, 8],
-      backgroundColor: ["#FF638450", "#36A2EB50", "#FFCE5650"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-      borderColor: ["#FF638450", "#36A2EB50", "#FFCE5650"],
-    },
-  ],
-};
+      backgroundColor: ['#FF638450', '#36A2EB50', '#FFCE5650'],
+      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+      borderColor: ['#FF638450', '#36A2EB50', '#FFCE5650']
+    }
+  ]
+}
 
 const options = {
   responsive: true,
@@ -86,67 +90,92 @@ const options = {
       top: 20,
       bottom: 20,
       left: 20,
-      right: 20,
-    },
-  },
-
-};
+      right: 20
+    }
+  }
+}
 const centerTextPlugin = {
-  id: "centerText",
+  id: 'centerText',
   afterDraw(chart) {
-    const { ctx, chartArea } = chart;
-    const { width, height } = chartArea;
+    const { ctx, chartArea } = chart
+    const { width, height } = chartArea
 
-    const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-    const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-    const radius = Math.min(width, height) / 2;
+    const centerX = (chart.chartArea.left + chart.chartArea.right) / 2
+    const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2
+    const radius = Math.min(width, height) / 2
 
-    const progress = 0.75;
-    const angle = progress * 2 * Math.PI - Math.PI / 2;
-    const x = centerX + radius * Math.cos(angle);
-    const y = centerY + radius * Math.sin(angle);
+    const progress = 0.75
+    const angle = progress * 2 * Math.PI - Math.PI / 2
+    const x = centerX + radius * Math.cos(angle)
+    const y = centerY + radius * Math.sin(angle)
 
-    ctx.save();
-    ctx.beginPath();
-    const circleRadius = 15; // Increase the size of the indicator by increasing this value
-    ctx.arc(x, y, circleRadius, 0, 2 * Math.PI);
-    ctx.fillStyle = "white";
-    ctx.lineWidth = 5; // Set the border width (2px)
-    ctx.strokeStyle = "#76bff1"; // Set the border color (red)
-    ctx.stroke();
-    ctx.fill();
-    ctx.restore();
-  },
-};
+    ctx.save()
+    ctx.beginPath()
+    const circleRadius = 15 // Increase the size of the indicator by increasing this value
+    ctx.arc(x, y, circleRadius, 0, 2 * Math.PI)
+    ctx.fillStyle = 'white'
+    ctx.lineWidth = 5 // Set the border width (2px)
+    ctx.strokeStyle = '#76bff1' // Set the border color (red)
+    ctx.stroke()
+    ctx.fill()
+    ctx.restore()
+  }
+}
 
 // Register the center text plugin
-Chart.register(centerTextPlugin);
+Chart.register(centerTextPlugin)
 const createChart = () => {
   if (chartCanvas.value) {
     donutChart = new Chart(chartCanvas.value, {
-      type: "doughnut",
+      type: 'doughnut',
       data,
       options,
-      plugins: [shadowPlugin, centerTextPlugin],
-
-    });
+      plugins: [shadowPlugin, centerTextPlugin]
+    })
   }
-};
+}
 
 onMounted(() => {
-  createChart();
-});
+  createChart()
+})
 
 onBeforeUnmount(() => {
   if (donutChart) {
-    donutChart.destroy();
+    donutChart.destroy()
   }
-});
+})
 </script>
 
 <style scoped>
 canvas {
   width: 100%;
   height: 400px;
+}
+
+.circle-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background-color: #df93bd;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  -webkit-box-shadow: 0px 0px 23px 2px rgba(223, 147, 189, 1);
+  -moz-box-shadow: 0px 0px 23px 2px rgba(223, 147, 189, 1);
+  box-shadow: 0px 0px 23px 2px rgba(223, 147, 189, 1);
+}
+
+.inner-content {
+  text-align: center;
+}
+
+.day-number {
+  font-size: 2em;
 }
 </style>
