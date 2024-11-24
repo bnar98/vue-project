@@ -157,8 +157,8 @@ canvas {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   background-color: #df93bd;
   border-radius: 50%;
   display: flex;
