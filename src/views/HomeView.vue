@@ -98,6 +98,14 @@ const options = {
     }
   }
 }
+
+//get today day
+const today = new Date().getDate()
+console.log(today)
+//get number of days in this month
+const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate()
+console.log(daysInMonth)
+
 const centerTextPlugin = {
   id: 'centerText',
   afterDraw(chart) {
@@ -108,8 +116,8 @@ const centerTextPlugin = {
     const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2
     const radius = Math.min(width, height) / 2
 
-    const progress = 0.75
-    const angle = progress * 2 * Math.PI - Math.PI / 2
+    const progress = (today / daysInMonth) * 100
+    const angle = (progress / 100) * 2 * Math.PI - Math.PI / 2
     const x = centerX + radius * Math.cos(angle)
     const y = centerY + radius * Math.sin(angle)
 
@@ -127,7 +135,7 @@ const centerTextPlugin = {
 }
 
 // Register the center text plugin
-Chart.register(centerTextPlugin)
+// Chart.register(centerTextPlugin)
 const createChart = () => {
   if (chartCanvas.value) {
     donutChart = new Chart(chartCanvas.value, {
