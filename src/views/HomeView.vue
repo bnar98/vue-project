@@ -21,7 +21,10 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend, CategoryScale } from 'chart.js'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
+const router = useRouter()
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend, CategoryScale)
 
 const chartCanvas = ref<HTMLCanvasElement | null>(null)
@@ -70,17 +73,18 @@ Chart.register(shadowPlugin)
 
 const data = {
   labels: [],
-  datasets: [
-    {
-      label: 'Colors',
-      data: [12, 20, 8],
-      backgroundColor: ['#FF638450', '#36A2EB50', '#FFCE5650'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-      borderColor: ['#FF638450', '#36A2EB50', '#FFCE5650']
-    }
-  ]
+  datasets: route.query.chartData
+    ? JSON.parse(route.query.chartData as string)
+    : [
+        {
+          label: 'Colors',
+          data: [route.query.period ?? 12, 20, 8],
+          backgroundColor: ['#FF638450', '#36A2EB50', '#FFCE5650'],
+          hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+          borderColor: ['#FF638450', '#36A2EB50', '#FFCE5650']
+        }
+      ]
 }
-
 const options = {
   responsive: true,
   maintainAspectRatio: false,
@@ -157,8 +161,8 @@ canvas {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   background-color: #df93bd;
   border-radius: 50%;
   display: flex;
