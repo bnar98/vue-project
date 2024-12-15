@@ -9,7 +9,13 @@
     "
   >
     <canvas ref="chartCanvas"></canvas>
-    <div class="circle-indicator">
+    <div
+      class="circle-indicator"
+      :style="`background-color: ${route.params.color ?? '#B2D2FE'};
+          -webkit-box-shadow: 0px 0px 23px 2px ${route.params.color ?? '#B2D2FE'};
+          -moz-box-shadow: 0px 0px 23px 2px ${route.params.color ?? '#B2D2FE'};
+          box-shadow: 0px 0px 23px 2px ${route.params.color ?? '#B2D2FE'};`"
+    >
       <div class="inner-content">
         <div>DAY</div>
         <div class="day-number">24</div>
@@ -142,7 +148,7 @@ const createChart = () => {
       type: 'doughnut',
       data,
       options,
-      plugins: [shadowPlugin, centerTextPlugin]
+      plugins: [shadowPlugin]
     })
   }
 }
@@ -171,16 +177,12 @@ canvas {
   transform: translate(-50%, -50%);
   width: 200px;
   height: 200px;
-  background-color: #df93bd;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   font-weight: bold;
-  -webkit-box-shadow: 0px 0px 23px 2px rgba(223, 147, 189, 1);
-  -moz-box-shadow: 0px 0px 23px 2px rgba(223, 147, 189, 1);
-  box-shadow: 0px 0px 23px 2px rgba(223, 147, 189, 1);
 }
 
 .inner-content {
