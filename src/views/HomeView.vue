@@ -11,10 +11,10 @@
     <canvas ref="chartCanvas"></canvas>
     <div
       class="circle-indicator"
-      :style="`background-color: ${route.params.color ?? '#B2D2FE'};
-          -webkit-box-shadow: 0px 0px 23px 2px ${route.params.color ?? '#B2D2FE'};
-          -moz-box-shadow: 0px 0px 23px 2px ${route.params.color ?? '#B2D2FE'};
-          box-shadow: 0px 0px 23px 2px ${route.params.color ?? '#B2D2FE'};`"
+      :style="`background-color: ${route.query.color ?? '#B2D2FE'};
+          -webkit-box-shadow: 0px 0px 23px 2px ${route.query.color ?? '#B2D2FE'};
+          -moz-box-shadow: 0px 0px 23px 2px ${route.query.color ?? '#B2D2FE'};
+          box-shadow: 0px 0px 23px 2px ${route.query.color ?? '#B2D2FE'};`"
     >
       <div class="inner-content">
         <div>DAY</div>
